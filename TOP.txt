@@ -1,0 +1,43 @@
+Library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity TOP is
+port(
+Tcode,Tessai: in std_logic_vector(1 downto 0);
+Tinitialiser,Treset,Tclock : in std_logic;
+Tporte,Talarme : out std_logic
+
+);end TOP;
+
+architecture rtl of TOP is
+
+signal Tvalide : std_logic ; 
+signal Tcompt : std_logic_vector(1 downto 0); 
+
+component UC
+port(
+
+code,essai : in std_logic_vector(1 downto 0);
+initialiser,reset,clock : in std_logic;
+valide : out std_logic;
+compt : out std_logic_vector(1 downto 0)
+
+
+);end component;
+
+component UV 
+port(
+valide : in std_logic;
+compt : in std_logic_vector(1 downto 0);
+p, a : out std_logic
+
+);end component;
+
+begin
+
+UCT : UC port map(Tcode,Tessai,Tinitialiser,Treset,Tclock,Tvalide,Tcompt);
+UVT : UV port map(Tvalide,Tcompt,Tporte,Talarme);
+
+
+end rtl;

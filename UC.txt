@@ -1,0 +1,38 @@
+Library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+
+entity UC is
+port(
+
+code,essai : in std_logic_vector(1 downto 0);
+reset, clock, initialiser  : in std_logic;
+compt : out std_logic_vector(1 downto 0);
+valide : out std_logic
+
+);end UC;
+
+architecture rtl of UC is 
+begin
+
+PUC : process(clock,initialiser,code,essai,reset)
+begin
+
+if (reset='0') 
+then  compt <= (others => '0');
+valide <= '0';
+
+elsif ( clock ='1' and clock'event) 
+ then if (initialiser='1') then valide <= '0' ;
+ compt <= (others => '0'); 
+ else if(essai=code) then valide <= '1' ;
+ compt <= (others => '0');
+			else valide <= '0';
+			compt <= (others => '1');
+		end if;
+	end if;
+end if;	
+	end process PUC;
+
+end rtl;

@@ -1,0 +1,70 @@
+Library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity test is
+end test;
+
+architecture rtl of test is
+
+component TOP 
+port(
+Tcode,Tessai: in std_logic_vector(1 downto 0);
+Tinitialise,Treset,Tclock : in std_logic;
+Tporte,Talarme : out std_logic
+
+);end component;
+
+signal Tinitialiser,Treset,Tclock : std_logic ; 
+signal Tcode,Tessai : std_logic_vector(1 downto 0); 
+signal Tporte,Talarme : std_logic ; 
+begin
+
+DUT : TOP port map (Tcode,Tessai,Tinitialiser,Treset,Tclock,Tporte,Talarme);
+
+process
+begin
+
+wait for 500 ns ;
+Tcode <= "00";
+Tessai<= "00";
+Tinitialiser <= '1';
+Treset <= '1';
+Tclock <= '1';
+
+wait for 600 ns ;
+Tcode <= "01";
+Tessai<= "01";
+Tinitialiser <= '1';
+Treset <= '1';
+Tclock <= '1';
+
+wait for 700 ns ;
+
+Tcode <= "10";
+Tessai<= "10";
+Tinitialiser <= '1';
+Treset <= '1';
+Tclock <= '0';
+
+wait for 800 ns ;
+
+Tcode <= "11";
+Tessai<= "11";
+Tinitialiser <= '1';
+Treset <= '0';
+Tclock <= '1';
+
+wait for 900 ns ;
+
+Tcode <= "00";
+Tessai<= "11";
+Tinitialiser <= '1';
+Treset <= '0';
+Tclock <= '0';
+
+wait for 1000 ns ;
+
+
+end process;
+end rtl;

@@ -1,0 +1,77 @@
+Library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity UV is
+port(
+clk,reset,valide : in std_logic;
+compt : in std_logic_vector(1 downto 0);
+p,a : out std_logic
+);
+end UV;
+
+architecture rtl of UV is
+type state is (mit,alarme,ouvrir);
+signal present,futur : state;
+begin
+RE : process(clk,reset)
+begin
+ if (reset = '0') then
+  present <= mit;
+ elsif (clk ='1' and clk'event) then
+  present <= futur;
+ end if;
+end process RE;
+
+
+S : process(present)
+begin
+ case (present) is
+  when mit =>
+
+p <= '0';
+
+a <= '0';
+
+when ouvrir =>
+
+p <= '1';
+
+a <= '0';
+
+when alarme =>
+
+p <= '0';
+
+a <= '1';
+
+when others =>
+
+p <= '0';
+
+a <= '0';
+ end case;
+end process S;
+
+F : process(present,valide,compt)
+begin
+ case (present) is
+   when mit =>
+	if(valide='1') then
+	futur <= ouvrir ;
+	elsif(valide='0' and compt="11")  then
+	futur <= alarme ;
+	end if;
+   
+	when ouvrir => futur <= mit ;  
+  
+  when alarme =>
+  
+   futur <= mit ;
+
+   when others =>
+	  futur <= mit ;	
+	
+ end case;
+end process F;
+end rtl;
